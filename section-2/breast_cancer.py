@@ -1,17 +1,25 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 # -*- coding: utf-8 -*-
 
 import numpy
+from sklearn import datasets
 
-entries = numpy.array([[0,0],[0,1],[1,0],[1,1]])
-outputs = numpy.array([[0],[1],[1],[0]])
-weights0 = numpy.array([[-0.424, -0.740, -0.961], [0.358, -0.577, -0.469]])
-weights1 = numpy.array([[-0.017],[-0.893],[0.148]])
+base = datasets.load_breast_cancer()
 
-#weights0 = 2 * numpy.random.random((2,3)) - 1
-#weights1 = 2 * numpy.random.random((3,1)) - 1
+entries = base.data
+outputs_values = base.target
 
-epochs = 100000
-learning_rate = 10
+outputs = numpy.empty([569, 1], dtype=int)
+for i in range(569):
+    outputs[i] = outputs_values[i]
+
+weights0 = 2 * numpy.random.random((30,5)) - 1
+weights1 = 2 * numpy.random.random((5,1)) - 1
+
+epochs = 10000
+learning_rate = 0.3
 momentum = 1
 
 def sigmoid(x):
@@ -50,13 +58,3 @@ for j in range(epochs):
     new_weights0 = entry_layer_transpose.dot(delta_hidden_layer)
     weights0 = ( weights0 * momentum ) + ( new_weights0 * learning_rate )
     
-
-# weight1_0
-# -13.4554  -1.02607	  6.15912
-# 6.16094   -1.02596	  -13.4509
-
-# weights1
-# 18.5575
-# -48.2223
-# 18.5565
-
